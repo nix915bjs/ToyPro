@@ -17,6 +17,6 @@
 	<map name="map">
 		<area shape="rect" title="지점 선택해보기.."  coords="0, 0, 50, 50" href="/toysearch/search.jsp">
 	</map>
-
+진솔이
 </body>
 </html>
