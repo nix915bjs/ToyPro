@@ -1,0 +1,30 @@
+#aside
+{
+	float: left;
+	width: 200px;
+	/* border: 1px solid red; */
+	padding: 32px 10px;
+}
+#aside_title
+{
+	height: 200px;
+	border: 1px solid orange;
+}
+#aside_menu
+{
+	margin-top: 10px;
+	height: 300px;
+	border: 1px solid orange;
+}
+
+.title {display:block;width:200px;height:150px;text-align:center;vertical-align:middle;line-height:150px;background-color:#CC3D3D;font-size:18pt;color:white;border-radius:10px 10px 0px 0px;}
+#aside a{text-decoration:none;}
+#aside ul {margin:0px;padding:0px;}
+#aside ul li {background-color:#EAEAEA;margin-top:2px;padding: 0 10px 0 15px; list-style:none;width:175px;height:60px;font-size:12pt;}
+#aside ul li a {position:relative;display:block;text-align:left;vertical-align:middle;line-height:60px;color:black;}
+#aside ul li:hover{background-color:#CC3D3D;color:white;}
+#aside ul li:hover a{color:white;}
+#aside ul li a:hover .arrow{display:block;position:absolute;right:10px;top:0px;height:60px;vertical-align:middle;line-height:60px;color:#fff;}
+.arrow {display:none;}
+.last{border-radius:0px 0px 10px 10px}
+.last a:hover{border-radius:0px 0px 10px 10px;}

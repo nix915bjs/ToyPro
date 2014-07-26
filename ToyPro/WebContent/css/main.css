@@ -1,0 +1,128 @@
+* {
+	margin:0;
+	padding:0;
+}
+body  {
+	font-family:Arial, Helvetica, sans-serif;
+	/* font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif; */
+	font-size:12px;
+	background:#FFFFFF;
+	color:#515151;
+	/* overflow-y: scroll; */
+}
+img {
+	border:0;
+}
+h1 {
+	color:#dd8551;
+	font-size:24px;
+	font-family:tahoma, arial;
+	font-weight:bold;
+	padding:0 0 25px 0;
+}
+h2 {
+	color:#dd8551;
+	font-size:24px;
+	font-family:tahoma, arial;
+	padding:0 0 25px 0;
+}
+h3 {
+	color:#dd8551;
+	font-size:24px;
+	font-family:tahoma, arial;
+	padding:0 0 5px 0;
+}
+.buttonStyle {
+	border:0;
+	cursor:pointer;
+	font-size:14px;
+	color:#ffffff;
+	background:#dd8551;
+	padding:2px 7px 2px 7px;
+}
+a {
+	color:#dd8551;
+	text-decoration:none;
+}
+a:hover {
+	color:#dd8551;
+	text-decoration:none;
+}
+#container { 
+	width: 980px;  
+	margin: 0 auto;
+} 
+.clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
+	clear:both;
+    height:0;
+    font-size: 1px;
+    line-height: 0px;
+}
+
+/* .image_slide {
+	padding:25px 0;
+	height:313px;
+	width:980px;
+	border: 1px solid red;
+} */
+#main_content {
+	padding:5px 0;
+}
+.main_content {
+	float:left;
+	width:273px;
+	padding:0 25px 20px 25px;
+	border: 1px solid orange;
+	height: 250px;
+}
+
+/* write : Hey-Rim Start slide style*/
+@font-face {
+	
+	font-family: 'BebasNeueRegular';
+    src: url('../fonts/BebasNeue-webfont.eot');
+    src: url('../fonts/BebasNeue-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/BebasNeue-webfont.woff') format('woff'),
+         url('../fonts/BebasNeue-webfont.ttf') format('truetype'),
+         url('../fonts/BebasNeue-webfont.svg#BebasNeueRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.container{
+	width: 100%;
+	position: relative;
+	text-align: center;
+}
+/* Media Queries */
+@media screen and (max-width: 767px) {
+	.container > header{
+		text-align: center;
+	}
+}
+/* write : Hey-Rim End slide style*/
+
+
+/* write : Hey-Rim Start CSS reset */
+address,caption,cite,code,dfn,th,var {
+	font-style:normal;
+	font-weight:normal;
+}
+ol,ul {
+	list-style:none;
+}
+caption,th {
+	text-align:left;
+}
+h1,h2,h3,h4,h5,h6 {
+	font-size:100%;
+	font-weight:normal;
+}
+q:before,q:after {
+	content:'';
+}
+abbr,acronym { border:0;
+}
+section, header{
+	display: block;
+}
+/* write : Hey-Rim End Css Reset*/

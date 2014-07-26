@@ -1,0 +1,144 @@
+.logoContainer
+{
+	float:left;
+	padding:30px 0;
+}
+.slogan
+{
+	padding-left: 10px;
+	color:#747474;
+	font-size:12px;
+}
+.menu_sub
+{
+	float:right;
+	background:#FFFFFF;
+	margin:4px 3px 0px 3px;
+	padding:30px 0 0 0;
+}
+.menu_sub img
+{
+	border: 1px solid #D5D5D5;
+	padding-left: 5px;
+	padding-top: 5px;
+}
+
+
+.menu
+{
+	background:#ffffff;
+	padding-top: 17px;
+	height: 40px;
+	/* padding:5px 0; */
+	margin-bottom:-15px;
+	/* border: 1px solid black; */
+	border-top: 2px solid black;
+	border-bottom: 1px solid black;
+}
+.menu ul{
+	height:40px;
+	padding-left:20px;
+	float:right;
+
+}
+.menu li
+{
+	height:40px;
+	list-style:none;
+	display:inline;
+	/* padding:5px 25px 16px 25px; */
+}
+/*메뉴바 글씨 설정*/
+.menu ul a{
+	color:#000000;
+	font-size:17px;
+	font-weight:bold;
+	text-decoration:none;
+}
+/* 마우스 오버시 border */
+.menu ul li span{
+	padding:5px 8px 15px 8px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.menu #intro:hover{
+	border-bottom: 8px solid #4374D9;
+}
+.menu #info:hover{
+	border-bottom: 8px solid #008299;
+}
+.menu #toySearch:hover{
+	border-bottom: 8px solid #CC3D3D;
+}
+.menu #kidsBank:hover{
+	border-bottom: 8px solid #8041D9;
+}
+.menu #community:hover{
+	border-bottom: 8px solid #FFBB00;
+}
+/* 마우스 오버시 상세메뉴 나오는 css(jquery 적용시 주석) */
+.menu ul span:hover ul{
+	display: block;
+	text-align: center;
+	margin-top: 21px;
+	background-color: #F6F6F6;
+	position: absolute;
+	z-index:1500;
+}
+.menu ul #intro:hover ul{
+	width: 59px;
+	height: 55px;
+} 
+.menu ul #info:hover ul{
+	margin-left: 80px;
+	width: 90px;
+	height: 83px;
+}
+.menu ul #toySearch:hover ul{
+	margin-left: 190px;
+	width: 110px;
+	height: 83px;
+}
+.menu ul #kidsBank:hover ul{
+	margin-left: 320px;
+	width: 92px;
+	height: 83px;
+}
+.menu ul #community:hover ul{
+	margin-left: 428px;
+	width: 84px;
+	height: 138px;
+}
+
+
+.menu ul span:hover ul li{
+	/* border:1px solid black; */
+	margin-left: -20px;
+	margin-top: -20px;
+}
+.menu ul #intro ul li{
+	/* border:1px solid black; */
+	margin-left:-20px;
+	margin-top: -20px;
+}
+
+.menu ul ul a{
+	font-size: 12px;
+	font-weight: normal;
+}
+/* 상세메뉴 hover */
+.menu ul ul a:hover{
+	color: #FF0000;
+}
+/* 상세메뉴 나오게 하기 */
+.menu ul ul{
+	display: none;
+	position: absolute;
+	padding-top: 10px;
+	float: none;
+	
+}
+/* 상세메뉴 간격 */
+.menu ul ul p{
+	padding-bottom: 13px;
+}

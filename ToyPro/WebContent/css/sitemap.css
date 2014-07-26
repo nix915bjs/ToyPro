@@ -1,0 +1,28 @@
+#sitemap
+{
+	height: 600px;
+	font-family: malgun gothic;
+}
+#sitemap table tr
+{
+	height: 120px;
+}
+.sitemap_menu
+{
+	width: 100px;
+	border-bottom: 1px dotted gray;
+	
+	padding: 40px 10px;
+}
+.sitemap_menutitle
+{
+	width: 110px;
+	font-size: 13pt;
+	border-bottom: 1px dotted gray;
+	border-right: 1px solid gray;
+	border-collapse: collapse;
+}
+.sitemap_hr
+{
+	border-top: 2px solid black;
+}
