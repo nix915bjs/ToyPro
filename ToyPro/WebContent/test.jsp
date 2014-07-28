@@ -17,10 +17,10 @@
 	<map name="map">
 		<area shape="rect" title="지점 선택해보기.."  coords="0, 0, 50, 50" href="/toysearch/search.jsp">
 	</map>
-진솔이 호걸이 
-진솔이 다시 수정
-호걸이 다시 수정
-김양배 다시 수정
+솔솔이 걸걸이 
+솔솔이 다시 수정
+걸걸이 다시 수정
+김양 배신 한다 다시 수정
 우리조 화이팅 ^^
 </body>
 </html>
