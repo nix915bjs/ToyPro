@@ -2,20 +2,8 @@
 DROP TABLE toy_info 
 	CASCADE CONSTRAINTS;
 
-/* 서고이용정보 */
-DROP TABLE library_use 
-	CASCADE CONSTRAINTS;
-
-/* 서고정보 */
-DROP TABLE library_info 
-	CASCADE CONSTRAINTS;
-
 /* 대여점정보 */
 DROP TABLE rental_shop 
-	CASCADE CONSTRAINTS;
-
-/* 분관운영정보 */
-DROP TABLE TABLE4 
 	CASCADE CONSTRAINTS;
 
 /* 분류정보 */
@@ -24,6 +12,10 @@ DROP TABLE category_info
 
 /* 구정보 */
 DROP TABLE gu_info 
+	CASCADE CONSTRAINTS;
+
+/* 공지사항 */
+DROP TABLE notice 
 	CASCADE CONSTRAINTS;
 
 /* 장난감정보 */
@@ -39,7 +31,8 @@ CREATE TABLE toy_info (
 	use_age VARCHAR2(50), /* 이용연령 */
 	rental_state VARCHAR2(20) NOT NULL, /* 대여상태 */
 	toy_img VARCHAR2(100), /* 장난감이미지 */
-	detail CLOB /* 상세설명 */
+	detail CLOB, /* 상세설명 */
+	reg_date DATE DEFAULT SYSDATE NOT NULL /* 등록일 */
 );
 
 CREATE UNIQUE INDEX PK_toy_info
@@ -54,44 +47,6 @@ ALTER TABLE toy_info
 		PRIMARY KEY (
 			toy_code,
 			rental_code
-		);
-
-/* 서고이용정보 */
-CREATE TABLE library_use (
-	loc_code INTEGER NOT NULL /* 서고코드 */
-);
-
-CREATE UNIQUE INDEX PK_library_use
-	ON library_use (
-		loc_code ASC
-	);
-
-ALTER TABLE library_use
-	ADD
-		CONSTRAINT PK_library_use
-		PRIMARY KEY (
-			loc_code
-		);
-
-/* 서고정보 */
-CREATE TABLE library_info (
-	loc_no INTEGER NOT NULL, /* 서고번호 */
-	location VARCHAR2(255) NOT NULL, /* 서고명 */
-	toy_cnt INTEGER NOT NULL, /* 장난감수 */
-	loc_code INTEGER NOT NULL, /* 서고코드 */
-	rental_code INTEGER /* 대여점번호 */
-);
-
-CREATE UNIQUE INDEX PK_library_info
-	ON library_info (
-		loc_no ASC
-	);
-
-ALTER TABLE library_info
-	ADD
-		CONSTRAINT PK_library_info
-		PRIMARY KEY (
-			loc_no
 		);
 
 /* 대여점정보 */
@@ -117,23 +72,6 @@ CREATE UNIQUE INDEX PK_rental_shop
 ALTER TABLE rental_shop
 	ADD
 		CONSTRAINT PK_rental_shop
-		PRIMARY KEY (
-			rental_code
-		);
-
-/* 분관운영정보 */
-CREATE TABLE TABLE4 (
-	rental_code INTEGER NOT NULL /* 대여점번호 */
-);
-
-CREATE UNIQUE INDEX PK_TABLE4
-	ON TABLE4 (
-		rental_code ASC
-	);
-
-ALTER TABLE TABLE4
-	ADD
-		CONSTRAINT PK_TABLE4
 		PRIMARY KEY (
 			rental_code
 		);
@@ -174,6 +112,29 @@ ALTER TABLE gu_info
 			gu_code
 		);
 
+/* 공지사항 */
+CREATE TABLE notice (
+	notice_code INTEGER NOT NULL, /* 게시글번호 */
+	subject VARCHAR2(255) NOT NULL, /* 제목 */
+	reg_date DATE DEFAULT sysdate NOT NULL, /* 등록일 */
+	notice_count INTEGER DEFAULT 0 NOT NULL, /* 조회수 */
+	writer VARCHAR2(20) NOT NULL, /* 작성자 */
+	notice_content CLOB NOT NULL, /* 게시글 */
+	attachment VARCHAR2(50) /* 첨부파일 */
+);
+
+CREATE UNIQUE INDEX PK_notice
+	ON notice (
+		notice_code ASC
+	);
+
+ALTER TABLE notice
+	ADD
+		CONSTRAINT PK_notice
+		PRIMARY KEY (
+			notice_code
+		);
+
 ALTER TABLE toy_info
 	ADD
 		CONSTRAINT FK_rental_shop_TO_toy_info
@@ -194,26 +155,6 @@ ALTER TABLE toy_info
 			category_code
 		);
 
-ALTER TABLE library_info
-	ADD
-		CONSTRAINT FK_library_use_TO_library_info
-		FOREIGN KEY (
-			loc_code
-		)
-		REFERENCES library_use (
-			loc_code
-		);
-
-ALTER TABLE library_info
-	ADD
-		CONSTRAINT FK_rental_shop_TO_library_info
-		FOREIGN KEY (
-			rental_code
-		)
-		REFERENCES rental_shop (
-			rental_code
-		);
-
 ALTER TABLE rental_shop
 	ADD
 		CONSTRAINT FK_gu_info_TO_rental_shop
@@ -223,15 +164,165 @@ ALTER TABLE rental_shop
 		REFERENCES gu_info (
 			gu_code
 		);
-
-ALTER TABLE TABLE4
-	ADD
-		CONSTRAINT FK_rental_shop_TO_TABLE4
-		FOREIGN KEY (
-			rental_code
-		)
-		REFERENCES rental_shop (
-			rental_code
-		);
 		
+commit;
+
+-- 구 정보 테이블 데이터 입력
+
+insert into gu_info values(1, '강남구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '강동구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '강북구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '강서구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '관악구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '광진구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '구로구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '금천구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '노원구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '도봉구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '동대문구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '동작구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '마포구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '서대문구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '서초구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '성동구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '성북구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '송파구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '양천구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '영등포구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '용산구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '은평구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '종로구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '중구');
+
+insert into gu_info values((SELECT NVL(MAX(gu_code)+1, 1) FROM gu_info), '중량구');
+
+commit;
+
+-- 분류 정보 테이블 데이터 입력
+insert into category_info values('000', '자동차류');
+
+insert into category_info values('100', '역할놀이');
+
+insert into category_info values('200', '조립류');
+
+insert into category_info values('300', '신체놀이');
+
+insert into category_info values('400', '퍼즐(종이)류');
+
+insert into category_info values('500', '블럭');
+
+insert into category_info values('600', '음률');
+
+insert into category_info values('700', '비디오');
+
+insert into category_info values('800', '기타');
+
+commit;
+
+-- 대여점 정보 테이블 일부 입력 - 대여점번호(rental_code), 구일련번호(gu_code), 대여점명(rental_name)
+insert into rental_shop(rental_code, gu_code, rental_name) values(1, 1, '강남구육아종합지원센터(개포점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 1, '강남구육아종합지원센터(논현점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 1, '강남구육아종합지원센터(대치점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 1, '강남구육아종합지원센터(도곡점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 2, '동동레코텍(성내점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 2, '동동레코텍(천호점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 3, '강북구 장난감도서관');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 3, '장난감나라');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 4, '키득키득 놀잇감터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 5, '꿈놀이터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 6, '재미씨앗');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 7, '구로 꿈나무장난감나라(구로점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 7, '구로 꿈나무장난감나라(개봉점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 8, '장난감나라(시흥점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 8, '장난감나라(독산점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 9, '노원정보장난감도서관');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 10, '도봉구 육아종합지원센터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 10, '보듬이나눔이 영유아플라자');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 11, '동대문구 영유아플라자(답십리점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 11, '동대문구 영유아플라자(제기점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 12, '동작구육아종합지원센터(영유아플라자)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 12, '로야장난감대여점');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 12, '사당영유아돌보미센터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 12, '신대방영유아돌보미센터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 13, '도화 장난감대여점');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 13, '망원 장난감대여점');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 14, '서대문구육아종합지원센터');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 15, '서초구 육아종합지원센터(장난감도서관)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 16, '무지개장난감세상');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 17, '장난감이좋아');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 17, 'sb장난감도서관');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 18, '놀이감대여실');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 19, '양천구 육아종합지원센터(영유아플라자)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 20, '장난감 도서관 미운영');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 21, '용산 아이노리 장난감나라');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 22, '은평구육아종합지원센터 내 라온 장난감나라');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 23, '종로구 육아종합지원센터 장난감도서관');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 24, '신당장난감도서관(키즈토이)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 24, '중림장난감도서관(키즈토이)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 25, '장난감대여센터(중랑점)');
+
+insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 25, '장난감대여센터(면목점)');
+
 commit;
