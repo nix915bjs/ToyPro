@@ -43,33 +43,33 @@ public class ToyProductController
 		
 	}
 	
-	@RequestMapping(value="parsingDataUpdate")
-	public ModelAndView parsingDataUpdate() throws Exception
-	{
-		List<GuroToy> toyList = new GuroToyParsing().getToyData();
-//		List<LocationParse> locationList = new LocationParsing().getLocationData();
-		
-//		Map<String, Object> parseMap = new HashMap<String, Object>();
-		
-//		parseMap.put("toyList", toyList);
-//		parseMap.put("locationList", locationList);
-		
-		toyProductService.parsingDataUpdate(toyList);
-		
-		ModelAndView modelAndView = new  ModelAndView();
-		return modelAndView;
-	}
+//	@RequestMapping(value="parsingDataUpdate")
+//	public ModelAndView parsingDataUpdate() throws Exception
+//	{
+//		List<GuroToy> toyList = new GuroToyParsing().getToyData();
+////		List<LocationParse> locationList = new LocationParsing().getLocationData();
+//		
+////		Map<String, Object> parseMap = new HashMap<String, Object>();
+//		
+////		parseMap.put("toyList", toyList);
+////		parseMap.put("locationList", locationList);
+//		
+//		toyProductService.parsingDataUpdate(toyList);
+//		
+//		ModelAndView modelAndView = new  ModelAndView();
+//		return modelAndView;
+//	}
 	
-	@RequestMapping(value="guroRentalShopParsing")
-	public ModelAndView guroRentalShopParsing() throws Exception
-	{
-		List<GuroRentalShop> guroRentalShop = new GuroRentalShopParsing().getRentalShopData();
-		
-		toyProductService.guroRentalShopParsing(guroRentalShop);
-		
-		ModelAndView modelAndView = new  ModelAndView();
-		return modelAndView;
-	}
+//	@RequestMapping(value="guroRentalShopParsing")
+//	public ModelAndView guroRentalShopParsing() throws Exception
+//	{
+//		List<GuroRentalShop> guroRentalShop = new GuroRentalShopParsing().getRentalShopData();
+//		
+//		toyProductService.guroRentalShopParsing(guroRentalShop);
+//		
+//		ModelAndView modelAndView = new  ModelAndView();
+//		return modelAndView;
+//	}
 	
 	@RequestMapping("/listToyProductList.do")
 	public ModelAndView listToyProductList(@ModelAttribute("search") Search search) throws Exception{

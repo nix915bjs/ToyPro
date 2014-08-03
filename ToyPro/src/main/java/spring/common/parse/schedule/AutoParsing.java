@@ -21,16 +21,13 @@ public class AutoParsing {
 	@Qualifier("toyProductServiceImpl")
 	private ToyProductService toyProductService;
 	
-	
-	public void deleteList() throws Exception{
-		toyProductService.deleteList();
-	}
-	
-	public void parsingDataUpdate() throws Exception	{
+	public void guroToyParsing() throws Exception
+	{
 		List<GuroToy> toyList = new GuroToyParsing().getToyData();
 		
-		toyProductService.parsingDataUpdate(toyList);
-
+		List<String> dbToyIdList = toyProductService.getToyId();
+		
+		toyProductService.guroToyParsing(toyList, dbToyIdList);
 	}
 	
 	public void guroRentalShopParsing() throws Exception

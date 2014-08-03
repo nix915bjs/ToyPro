@@ -21,9 +21,8 @@ public class Do extends QuartzJobBean {
 		// TODO Auto-generated method stub
 		
 		try {
-			AutoParsing.deleteList();
+			AutoParsing.guroToyParsing();
 			AutoParsing.guroRentalShopParsing();
-			AutoParsing.parsingDataUpdate();
 			System.out.println("ÆÄ½Ì ¿Ï·á");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

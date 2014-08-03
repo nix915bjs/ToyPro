@@ -33,19 +33,19 @@ public class ToyProductDaoImpl implements ToyProductDao
 		this.sqlSession = sqlSession;
 	}
 
-	@Override
-	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception
-	{
-		System.out.println("여기 좀 타자..");
-		// TODO Auto-generated method stub
-		int count = 0;
-		for(GuroToy guroToy : toyList)
-		{
-			sqlSession.insert("ToyProductMapper.parsingDataUpdate", guroToy);
-			count++;
-		}
-		return count;
-	}
+//	@Override
+//	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception
+//	{
+//		System.out.println("여기 좀 타자..");
+//		// TODO Auto-generated method stub
+//		int count = 0;
+//		for(GuroToy guroToy : toyList)
+//		{
+//			sqlSession.insert("ToyProductMapper.parsingDataUpdate", guroToy);
+//			count++;
+//		}
+//		return count;
+//	}
 
 	@Override
 	public int guroRentalShopParsing(List<GuroRentalShop> rentalShopList) throws Exception
@@ -72,10 +72,50 @@ public class ToyProductDaoImpl implements ToyProductDao
 		return sqlSession.selectOne("ToyProductMapper.getTotalCount", search);
 	}
 	
+//	@Override
+//	public void deleteList() throws Exception {
+//		// TODO Auto-generated method stub
+//		sqlSession.delete("ToyProductMapper.deleteList");
+//		
+//	}
+	
 	@Override
-	public void deleteList() throws Exception {
+	public List<String> getToyId() throws Exception
+	{
 		// TODO Auto-generated method stub
-		sqlSession.delete("ToyProductMapper.deleteList");
+		return sqlSession.selectList("ToyProductMapper.getToyId");
+	}
+
+	@Override
+	public int guroToyParsing(List<GuroToy> toyList, List<String> dbToyIdList) throws Exception
+	{
+//		System.out.println("ToyProductDaoImpl의 guroToyParsing 메서드");
+		// TODO Auto-generated method stub
+		boolean check = false;
+		int insertCount = 0;
 		
+		for(int i = 0 ; i < toyList.size() ; i++)
+		{
+			check = false;
+			
+//			System.out.println("toyList.get("+i+").getToyIdid : "+toyList.get(i).getToyIdid());
+//			System.out.println(dbToyIdList.size());
+			for(int j = 0 ; j < dbToyIdList.size() ; j++)
+			{
+//				System.out.println(dbToyIdList.get(j));
+				if(toyList.get(i).getToyIdid().equals(dbToyIdList.get(j)))
+				{
+					check = true;
+					continue;
+				}
+			}
+			if(!check)
+			{
+				sqlSession.insert("ToyProductMapper.guroToyParsing", toyList.get(i));
+				insertCount++;
+			}
+		}
+		
+		return insertCount;
 	}
 }

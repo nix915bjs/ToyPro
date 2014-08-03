@@ -15,9 +15,13 @@ public interface ToyProductDao
 	
 	public int getTotalCount(Search search) throws Exception;
 	
-	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception;
+//	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception;
 	
 	public int guroRentalShopParsing(List<GuroRentalShop> rentalShopList) throws Exception;
 	
-	public void deleteList()throws Exception;
+	public int guroToyParsing(List<GuroToy> toyList, List<String> dbToyIdList) throws Exception;
+	
+//	public void deleteList()throws Exception;
+	
+	public List<String> getToyId() throws Exception;
 }

@@ -90,7 +90,7 @@
 	  	FROM (<include refid="sqlToyList"/>) countTable						
 	 </select>
 	
-	<insert id="parsingDataUpdate" parameterType="guroToy">
+	<insert id="guroToyParsing" parameterType="guroToy">
 		INSERT
 		INTO toy_info(toy_code, rental_code, category_code, toy_name, business, region, made_date, get_date, use_age, rental_state, toy_img)
 		VALUES(	#{toyIdid:VARCHAR},
@@ -120,5 +120,10 @@
 	</update>
 	
 	<delete  id="deleteList" >delete from toy_info</delete>
+	
+	<select id="getToyId"  resultType="string">
+		SELECT toy_code
+		FROM toy_info
+	</select>
 </mapper>
 	

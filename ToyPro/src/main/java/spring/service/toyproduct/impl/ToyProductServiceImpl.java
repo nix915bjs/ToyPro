@@ -34,14 +34,14 @@ public class ToyProductServiceImpl implements ToyProductService
 		this.toyProductDao = toyProductDao;
 	}
 
-	@Override
-	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception
-	{
-		// TODO Auto-generated method stub
-		System.out.println(toyProductDao);
-		System.out.println("parsingDataUpdate 메서드 안");
-		return toyProductDao.parsingDataUpdate(toyList);
-	}
+//	@Override
+//	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception
+//	{
+//		// TODO Auto-generated method stub
+//		System.out.println(toyProductDao);
+//		System.out.println("parsingDataUpdate 메서드 안");
+//		return toyProductDao.parsingDataUpdate(toyList);
+//	}
 
 	@Override
 	public int guroRentalShopParsing(List<GuroRentalShop> rentalShopList) throws Exception
@@ -66,8 +66,22 @@ public class ToyProductServiceImpl implements ToyProductService
 			return map;
 		}
 		
+//		@Override
+//		public void deleteList()throws Exception{
+//			toyProductDao.deleteList();
+//		}
+		
 		@Override
-		public void deleteList()throws Exception{
-			toyProductDao.deleteList();
+		public List<String> getToyId() throws Exception
+		{
+			// TODO Auto-generated method stub
+			return toyProductDao.getToyId();
+		}
+
+		@Override
+		public int guroToyParsing(List<GuroToy> toyList,
+				List<String> dbToyIdList) throws Exception {
+			// TODO Auto-generated method stub
+			return toyProductDao.guroToyParsing(toyList, dbToyIdList);
 		}
 }

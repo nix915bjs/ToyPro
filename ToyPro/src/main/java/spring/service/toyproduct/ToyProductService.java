@@ -13,9 +13,13 @@ public interface ToyProductService
 	//진솔코딩
 	public Map<String, Object>getToyList(Search search) throws Exception;
 	
-	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception;
+//	public int parsingDataUpdate(List<GuroToy> toyList) throws Exception;
 	
 	public int guroRentalShopParsing(List<GuroRentalShop> rentalShopList) throws Exception;
 	
-	public void deleteList()throws Exception;
+	public int guroToyParsing(List<GuroToy> toyList, List<String> dbToyIdList) throws Exception;
+	
+//	public void deleteList() throws Exception;
+	
+	public List<String> getToyId() throws Exception;
 }
