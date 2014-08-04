@@ -17,7 +17,7 @@
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
     <init-param>
       <param-name>encoding</param-name>
-      <param-value>euc_kr</param-value>
+      <param-value>UTF-8</param-value>
     </init-param>
   </filter>
   <filter-mapping>
@@ -35,6 +35,6 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>action</servlet-name>
-    <url-pattern>*.do</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="NoticeMapper">
+	<resultMap type="notice" id="noticeSelectMap">
+		<result property="noticeCode" column="notice_code" jdbcType="NUMERIC"/>
+		<result property="subject" column="subject" jdbcType="VARCHAR"/>
+		<result property="regDate" column="reg_date" jdbcType="VARCHAR"/>
+		<result property="noticeCount" column="notice_count" jdbcType="NUMERIC"/>
+		<result property="writer" column="writer" jdbcType="VARCHAR"/>
+		<result property="noticeContent" column="notice_content" jdbcType="VARCHAR"/>
+		<result property="attachment" column="attachment" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<sql id="sqlNoticeList">
+		SELECT notice_code, subject, attachment, writer, reg_date, notice_count
+		FROM notice
+	</sql>
+	
+	<select id="getNoticeList" parameterType="search" resultMap="noticeSelectMap">
+		SELECT notice_code, subject, attachment, writer, reg_date, notice_count
+		FROM (SELECT notice_code, subject, attachment, writer, reg_date, notice_count, ROWNUM AS row_seq
+				FROM(<include refid="sqlNoticeList"/>)
+				WHERE ROWNUM &lt;= ${currentPage * pageSize} )
+		WHERE row_seq BETWEEN ${(currentPage - 1) * pageSize + 1} AND ${currentPage * pageSize}
+	</select>
+	
+	<select  id="getTotalCount"  parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM (<include refid="sqlNoticeList"/>) countTable						
+	 </select>
+
+</mapper>

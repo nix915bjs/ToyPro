@@ -1,19 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR" trimDirectiveWhitespaces="true"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8" trimDirectiveWhitespaces="true"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
-<title>¼­¿ïÆ¯º°½Ã Á¾ÇÕ Àå³­°¨ µµ¼­°ü</title>
-<link href="../css/template.css" rel="stylesheet" type="text/css" />
+<!-- <link href="../css/template.css" rel="stylesheet" type="text/css" />
 <link href="../css/search.css" rel="stylesheet" type="text/css" />
 <link href="../css/header.css" rel="stylesheet" type="text/css" />
 <link href="../css/footer.css" rel="stylesheet" type="text/css" />
-<link href="../css/aside.css" rel="stylesheet" type="text/css" />
+<link href="../css/aside.css" rel="stylesheet" type="text/css" /> -->
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript">
-//°Ë»ö / page µÎ°¡Áö °æ¿ì ¸ğµÎ Form Àü¼ÛÀ» À§ÇØ JavaScrpt ÀÌ¿ë  
+//ê²€ìƒ‰ / page ë‘ê°€ì§€ ê²½ìš° ëª¨ë‘ Form ì „ì†¡ì„ ìœ„í•´ JavaScrpt ì´ìš©  
 	/* function fncToyList(currentPage) {
 		document.getElementById("currentPage").value = currentPage;
 	   	document.searchForm.submit();		
@@ -25,6 +21,126 @@
 		var searchForm = document.getElementById("searchForm");
 		searchForm.submit();
 	} */
+	var xmlHttp;
+
+	$(document).ready(function()
+	{
+		// ë²„íŠ¼ì´ ëˆŒë ¸ì„ ë•Œì˜ ì´ë²¤íŠ¸ë¥¼ í‘ì…˜ìœ¼ë¡œ êµ¬í˜„
+		initEventListener();
+		
+		// Ajax êµ¬í˜„ì„ ìœ„í•œ í™˜ê²½ì„¤ì • ì¤‘ ì•„ë˜ì™€ ê°™ì´ ë‘ ë‹¨ê³„ì˜ ë‚´ìš©ì„ ì‹¤í–‰
+		// 1. XMLHttpRequest ê°ì²´ ìƒì„±
+		// 2. ìš”ì²­ì— ëŒ€í•œ ì‘ë‹µ ì²˜ë¦¬ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		initXMLHttpRequest();
+	});
+
+	// ì™¸ë¶€ í˜ì´ì§€ì˜ íŒŒì¼ëª…ì„ ì•Œì•„ë‚¸ë‹¤.
+	function initEventListener()
+	{
+		// ë²„íŠ¼ì„ í´ë¦­ í–ˆì„ ë•Œ ì´ë²¤íŠ¸ ë°œìƒ
+		$("#testBtn").click(function(e)
+		{
+			alert("ì½ì–´ë“¤ì¼ í˜ì´ì§€ " + $(this).attr("data"));
+			loadPage($(this).attr("data"));
+			alert("loadPage í†µê³¼í–ˆë‚˜?");
+		});
+	}
+
+	// XMLHttpRequestë¥¼ ë¯¸ë¦¬ ìƒì„±í•´ ë‘¡ë‹ˆë‹¤.
+	function initXMLHttpRequest()
+	{
+		// 1. ë¸Œë¼ìš°ì €ì— ë”°ë¥¸ XMLHttpReqeust ìƒì„±
+		xmlHttp = createXMLHTTPObject();
+		
+		// 2. ìš”ì²­ì— ëŒ€í•œ ì‘ë‹µ ì²˜ë¦¬ ì´ë²¤íŠ¸ ë¦¬ìŠ¤ë„ˆ ë“±ë¡
+		xmlHttp.onreadystatechange = on_ReadyStateChange;
+	}
+
+	// 1. ë¸Œë¼ìš°ì €ì— ë”°ë¥¸ XMLHttpRequest ìƒì„±
+	function createXMLHTTPObject()
+	{
+		var xhr = null;
+		if(window.XMLHttpRequest)
+		{
+			// IE7 ë²„ì „ ì´ìƒ, í¬ë¡¬, ì‚¬íŒŒë¦¬, íŒŒì´ì–´í­ìŠ¤, ì˜¤í˜ë¼ ë“± ê±°ì˜ ëŒ€ë¶€ë¶„ì˜
+			// ë¸Œë¼ìš°ì €ì—ì„œëŠ” XMLHttpReqeust ê°ì²´ë¥¼ ì œê³µí•©ë‹ˆë‹¤.
+			xhr = new XMLHttpRequest();
+			alert("ê°ì²´ ìƒì„± ì™„ë£Œ");
+		}
+		else
+		{
+			// IE5, IE6 ë²„ì „ì—ì„œëŠ” ë‹¤ìŒê³¼ ê°™ì€ ë°©ë²•ìœ¼ë¡œ XMLHttpRequest ê°ì²´ë¥¼ ìƒì„±í•©ë‹ˆë‹¤.
+			xhr = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		return xhr;
+	}
+
+	// í˜ì´ì§€ë¥¼ ë¡œë”©í•˜ëŠ” í•¨ìˆ˜ì…ë‹ˆë‹¤.
+	// í˜ì´ì§€ë¥¼ ì½ì–´ ë“¤ì¼ ë•Œ ì±…ì„ì„ ë§¡ëŠ”ë‹¤.
+	function loadPage(strPage)
+	{
+		// 3. ì„œë²„ë¡œ ë³´ë‚¼ ë°ì´í„° ìƒì„±
+		// 4. GET ë°©ì‹ìœ¼ë¡œ ë°ì´í„° ë³´ë‚´ê¸°, ì‘ë‹µì€ ë¹„ë™ê¸°í™” í´ë¼ì´ì–¸íŠ¸ì™€ ì„œë²„ ê°„ì˜ ì—°ê²° ìš”ì²­ ì¤€ë¹„
+		alert("loadPage íƒ”ë‚˜?");
+		alert(strPage);
+		xmlHttp.open("GET", strPage, true);
+		//xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		
+		/* alert("open ë‹¤ìŒ"); */
+		// 5. ì‹¤ì œ ë°ì´í„° ì „ì†¡
+		xmlHttp.send(null);
+		/* alert("loadPage() ë!!"); */
+	}
+
+	// 6. ì‘ë‹µ ì²˜ë¦¬
+	function on_ReadyStateChange()
+	{
+		// 4 = ë°ì´í„° ì „ì†¡ ì™„ë£Œ (0 = ì´ˆê¸°í™” ì „, 1 = ë¡œë”© ì¤‘, 2 = ë¡œë”© ë¨, 3 = ëŒ€í™” ìƒíƒœ)
+		alert(xmlHttp.readyState);
+		if(xmlHttp.readyState == 4)
+		{
+			// 200ì€ ì—ëŸ¬ ì—†ìŒ (404 = í˜ì´ì§€ê°€ ì¡´ì¬í•˜ì§€ ì•ŠìŒ)
+			alert(xmlHttp.status);
+			if(xmlHttp.status == 200)
+			{
+				// ì„œë²„ì—ì„œ ë°›ì€ ê°’
+				alert("ì„œë²„ì—ì„œ ë°›ì€ ì›ë³¸ ë°ì´í„° : " + xmlHttp.responseText);
+				
+				// 7. ë°ì´í„° ì²˜ë¦¬
+				addPage(xmlHttp.responseText );
+			}
+			else
+			{
+				alert("ì²˜ë¦¬ ì¤‘ ì—ëŸ¬ê°€ ë°œìƒí–ˆìŠµë‹ˆë‹¤.");			
+			}
+		}
+	}
+
+	// 7. json í˜•ì‹ì˜ ë°ì´í„° ì²˜ë¦¬
+	function addPage(strInfo)
+	{
+		alert("strInfo : "+strInfo);
+		alert("addPage() íƒ”ë‚˜?");
+		var $newPage = $('strInfo');
+		alert("newPage ë‹¤ìŒ");
+		var strID = $newPage.attr("id");
+		alert("strID ë‹¤ìŒ");
+		if($("#"+strID).size() == 0)
+		{
+			alert("if ë¬¸ íƒ”ë‹¤");
+			$("#page_container").append(strInfo);	
+		}
+		else
+		{
+			alert("ì´ë¯¸ "+strID+"í˜ì´ì§€ê°€ ì¡´ì¬í•©ë‹ˆë‹¤.");
+		}
+	}
+	
+	function display()
+	{
+		var a = document.getElementById("countId");
+		a.style.display = "block";
+	}
 	
 	function fncToyList(currentPage2) {
 		var currentPage = document.getElementById("currentPage");
@@ -43,13 +159,6 @@
 		searchForm.submit();
 	}
 </script>
-</head>
-<body>
-	<!-- begin #container -->
-	<div id="container">
-
-		<!-- header -->
-		<jsp:include page="../layout/header.jsp" />
 
 		<!-- begin #contentContainer -->
 		<div id="contentContainer">
@@ -61,14 +170,14 @@
 				<div id="content_title">				
 					<p class="location font_loca1">
 						<img src="../images/iconHome.gif" width="10" height="8" alt=""
-							style="vertical-align: middle; margin-top: -2px;" /> È¨ <img
+							style="vertical-align: middle; margin-top: -2px;" /> í™ˆ <img
 							src="../images/iconArrow.gif" width="3" height="5" alt=""
-							style="vertical-align: middle; margin-top: -2px;" /> ¼Ò°³ <img
+							style="vertical-align: middle; margin-top: -2px;" /> ì†Œê°œ <img
 							src="../images/iconArrow.gif" width="3" height="5" alt=""
 							style="vertical-align: middle; margin-top: -2px;" /> <strong
-							class="font_loca2">Àå³­°¨ °Ë»ö</strong>
+							class="font_loca2">ì¥ë‚œê° ê²€ìƒ‰</strong>
 					</p>
-					 <span>Àå³­°¨°Ë»ö</span><br/>
+					 <span>ì¥ë‚œê°ê²€ìƒ‰</span><br/>
 
 					<img class="bar_img" src="../images/child_011.png" alt="" />
 					<p class="line2"></p>
@@ -80,141 +189,142 @@
     			<center>
     			<form method="post" id="searchForm" name="searchForm" action="/listToyProductList.do" >
     			<div id="search_box">
-					ºĞ ·ù&nbsp;&nbsp;
+					ë¶„ ë¥˜&nbsp;&nbsp;
 					<select id="subject" name="searchConditionCate"> 
-						<option value="">ºĞ·ù°Ë»ö</option>
+						<option value="">ë¶„ë¥˜ê²€ìƒ‰</option>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '000' }"><option value="000" selected="selected">ÀÚµ¿Â÷·ù</option></c:when>
-							<c:otherwise><option value="000">ÀÚµ¿Â÷·ù</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '000' }"><option value="000" selected="selected">ìë™ì°¨ë¥˜</option></c:when>
+							<c:otherwise><option value="000">ìë™ì°¨ë¥˜</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '100' }"><option value="100" selected="selected">¿ªÇÒ³îÀÌ</option></c:when>
-							<c:otherwise><option value="100">¿ªÇÒ³îÀÌ</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '100' }"><option value="100" selected="selected">ì—­í• ë†€ì´</option></c:when>
+							<c:otherwise><option value="100">ì—­í• ë†€ì´</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '200' }"><option value="200" selected="selected">Á¶¸³·ù</option></c:when>
-							<c:otherwise><option value="200">Á¶¸³·ù</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '200' }"><option value="200" selected="selected">ì¡°ë¦½ë¥˜</option></c:when>
+							<c:otherwise><option value="200">ì¡°ë¦½ë¥˜</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '300' }"><option value="300" selected="selected">½ÅÃ¼³îÀÌ</option></c:when>
-							<c:otherwise><option value="300">½ÅÃ¼³îÀÌ</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '300' }"><option value="300" selected="selected">ì‹ ì²´ë†€ì´</option></c:when>
+							<c:otherwise><option value="300">ì‹ ì²´ë†€ì´</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '400' }"><option value="400" selected="selected">ÆÛÁñ(Á¾ÀÌ)·ù</option></c:when>
-							<c:otherwise><option value="400">ÆÛÁñ(Á¾ÀÌ)·ù</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '400' }"><option value="400" selected="selected">í¼ì¦(ì¢…ì´)ë¥˜</option></c:when>
+							<c:otherwise><option value="400">í¼ì¦(ì¢…ì´)ë¥˜</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when  test="${search.searchConditionCate == '500' }"><option value="500" selected="selected">ºí·°</option></c:when>
-							<c:otherwise><option value="500">ºí·°</option></c:otherwise>
+							<c:when  test="${search.searchConditionCate == '500' }"><option value="500" selected="selected">ë¸”ëŸ­</option></c:when>
+							<c:otherwise><option value="500">ë¸”ëŸ­</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '600' }"><option value="600" selected="selected">À½·ü</option></c:when>
-							<c:otherwise><option value="600">À½·ü</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '600' }"><option value="600" selected="selected">ìŒë¥ </option></c:when>
+							<c:otherwise><option value="600">ìŒë¥ </option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '700' }"><option value="700" selected="selected">ºñµğ¿À</option></c:when>
-							<c:otherwise><option value="700">ºñµğ¿À</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '700' }"><option value="700" selected="selected">ë¹„ë””ì˜¤</option></c:when>
+							<c:otherwise><option value="700">ë¹„ë””ì˜¤</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionCate == '800' }"><option value="800" selected="selected">±âÅ¸</option></c:when>
-							<c:otherwise><option value="800">±âÅ¸</option></c:otherwise>
+							<c:when test="${search.searchConditionCate == '800' }"><option value="800" selected="selected">ê¸°íƒ€</option></c:when>
+							<c:otherwise><option value="800">ê¸°íƒ€</option></c:otherwise>
 						</c:choose>
 					</select> 
 					&nbsp;&nbsp;&nbsp; 
-					¿¬ ·É&nbsp;&nbsp;
+					ì—° ë ¹&nbsp;&nbsp;
 					<select id="age" name="searchConditionAge">
-						<option value="">¿¬·É°Ë»ö&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+						<option value="">ì—°ë ¹ê²€ìƒ‰&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '0¼¼~1¼¼' }"><option value="0¼¼~1¼¼" selected="selected">0¼¼~1¼¼</option></c:when>
-							<c:otherwise><option value="0¼¼~1¼¼">0¼¼~1¼¼</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '0ì„¸~1ì„¸' }"><option value="0ì„¸~1ì„¸" selected="selected">0ì„¸~1ì„¸</option></c:when>
+							<c:otherwise><option value="0ì„¸~1ì„¸">0ì„¸~1ì„¸</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '1¼¼~2¼¼' }"><option value="1¼¼~2¼¼" selected="selected">1¼¼~2¼¼</option></c:when>
-							<c:otherwise><option value="1¼¼~2¼¼">1¼¼~2¼¼</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '1ì„¸~2ì„¸' }"><option value="1ì„¸~2ì„¸" selected="selected">1ì„¸~2ì„¸</option></c:when>
+							<c:otherwise><option value="1ì„¸~2ì„¸">1ì„¸~2ì„¸</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '2¼¼~3¼¼' }"><option value="2¼¼~3¼¼" selected="selected">2¼¼~3¼¼</option></c:when>
-							<c:otherwise><option value="2¼¼~3¼¼">2¼¼~3¼¼</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '2ì„¸~3ì„¸' }"><option value="2ì„¸~3ì„¸" selected="selected">2ì„¸~3ì„¸</option></c:when>
+							<c:otherwise><option value="2ì„¸~3ì„¸">2ì„¸~3ì„¸</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '3¼¼~4¼¼' }"><option value="3¼¼~4¼¼" selected="selected">3¼¼~4¼¼</option></c:when>
-							<c:otherwise><option value="3¼¼~4¼¼">3¼¼~4¼¼</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '3ì„¸~4ì„¸' }"><option value="3ì„¸~4ì„¸" selected="selected">3ì„¸~4ì„¸</option></c:when>
+							<c:otherwise><option value="3ì„¸~4ì„¸">3ì„¸~4ì„¸</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '4¼¼~5¼¼' }"><option value="4¼¼~5¼¼" selected="selected">4¼¼~5¼¼</option></c:when>
-							<c:otherwise><option value="4¼¼~5¼¼">4¼¼~5¼¼</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '4ì„¸~5ì„¸' }"><option value="4ì„¸~5ì„¸" selected="selected">4ì„¸~5ì„¸</option></c:when>
+							<c:otherwise><option value="4ì„¸~5ì„¸">4ì„¸~5ì„¸</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == '5¼¼ÀÌ»ó' }"><option value="5¼¼ÀÌ»ó" selected="selected">5¼¼ÀÌ»ó</option></c:when>
-							<c:otherwise><option value="5¼¼ÀÌ»ó">5¼¼ÀÌ»ó</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == '5ì„¸ì´ìƒ' }"><option value="5ì„¸ì´ìƒ" selected="selected">5ì„¸ì´ìƒ</option></c:when>
+							<c:otherwise><option value="5ì„¸ì´ìƒ">5ì„¸ì´ìƒ</option></c:otherwise>
 						</c:choose>
 						<c:choose>
-							<c:when test="${search.searchConditionAge == 'ÀüÃ¼¿¬·É' }"><option value="ÀüÃ¼¿¬·É" selected="selected">ÀüÃ¼¿¬·É</option></c:when>
-							<c:otherwise><option value="ÀüÃ¼¿¬·É">ÀüÃ¼¿¬·É</option></c:otherwise>
+							<c:when test="${search.searchConditionAge == 'ì „ì²´ì—°ë ¹' }"><option value="ì „ì²´ì—°ë ¹" selected="selected">ì „ì²´ì—°ë ¹</option></c:when>
+							<c:otherwise><option value="ì „ì²´ì—°ë ¹">ì „ì²´ì—°ë ¹</option></c:otherwise>
 						</c:choose>
 					</select> 
 					&nbsp;&nbsp;&nbsp;
-					Àå³­°¨¸í&nbsp;
+					ì¥ë‚œê°ëª…&nbsp;
 					<input type="text" size="20" name="searchKeyword" />&nbsp;
-					<input type="submit" value=" °Ë »ö "  class="search_btn"/>
+					<input type="submit" value=" ê²€ ìƒ‰ "  class="search_btn"/>
 				</div>
 				
 				
 				<div id="search_map">
-					<img src="../images/searchmap.gif" alt="¼­¿ï½Ã ¼ÒÀç Àå³­°¨ µµ¼­°ü" usemap="#map"/>
+					<img src="../images/searchmap.gif" alt="ì„œìš¸ì‹œ ì†Œì¬ ì¥ë‚œê° ë„ì„œê´€" usemap="#map"/>
+					<div class="count" id="countId">5</div>
 					<map name="map" id="map">
-						<!-- <area href="#" alt="±¸·ÎÀå³­°¨³ª¶ó" title="±¸·ÎÀå³­°¨³ª¶ó" coords="194,320,207,330" shape="rect" target="_top" /> -->
-						<area href="#" alt="À°¾ÆÁö¿ø¼¾ÅÍ(°³Æ÷Á¡)" title="À°¾ÆÁö¿ø¼¾ÅÍ(°³Æ÷Á¡)" coords="421,318,431,328" shape="rect" />
-						<area href="#" alt="À°¾ÆÁö¿ø¼¾ÅÍ(³íÇöÁ¡)" title="À°¾ÆÁö¿ø¼¾ÅÍ(³íÇöÁ¡)" coords="455,318,465,328" shape="rect" />
-						<area href="#" alt="À°¾ÆÁö¿ø¼¾ÅÍ(´ëÄ¡Á¡)" title="À°¾ÆÁö¿ø¼¾ÅÍ(´ëÄ¡Á¡)" coords="431,336,441,346" shape="rect" />
-						<area href="#" alt="À°¾ÆÁö¿ø¼¾ÅÍ(µµ°îÁ¡)" title="À°¾ÆÁö¿ø¼¾ÅÍ(µµ°îÁ¡)" coords="463,336,473,346" shape="rect" />
-						<area href="#" alt="µ¿µ¿·¹ÄÚÅØ(¼º³»Á¡)" title="µ¿µ¿·¹ÄÚÅØ(¼º³»Á¡)" coords="553,250,563,260" shape="rect" />
-						<area href="#" alt="Å°µæÅ°µæ³îÀÕ°¨ÅÍ" title="Å°µæÅ°µæ³îÀÕ°¨ÅÍ" coords="94,229,104,239" shape="rect" />
-						<area href="#" alt="²Ş³îÀÌÅÍ" title="²Ş³îÀÌÅÍ" coords="274,367,284,377" shape="rect" />
-						<area href="#" alt="Àç¹Ì¾¾¾Ñ" title="Àç¹Ì¾¾¾Ñ" coords="468,257,478,267" shape="rect" />
-						<area href="#" alt="Àå³­°¨³ª¶ó(±¸·ÎÁ¡)" title="Àå³­°¨³ª¶ó(±¸·ÎÁ¡)" coords="194,319,204,329" shape="rect" />
-						<area href="#" alt="Àå³­°¨³ª¶ó(°³ºÀÁ¡)" title="Àå³­°¨³ª¶ó(°³ºÀÁ¡)" coords="160,305,170,315" shape="rect" />
+						<!-- <area href="#" alt="êµ¬ë¡œì¥ë‚œê°ë‚˜ë¼" title="êµ¬ë¡œì¥ë‚œê°ë‚˜ë¼" coords="194,320,207,330" shape="rect" target="_top" /> -->
+						<area href="#" alt="ìœ¡ì•„ì§€ì›ì„¼í„°(ê°œí¬ì )" title="ìœ¡ì•„ì§€ì›ì„¼í„°(ê°œí¬ì )" coords="421,318,431,328" shape="rect" />
+						<area href="#" alt="ìœ¡ì•„ì§€ì›ì„¼í„°(ë…¼í˜„ì )" title="ìœ¡ì•„ì§€ì›ì„¼í„°(ë…¼í˜„ì )" coords="455,318,465,328" shape="rect" />
+						<area href="#" alt="ìœ¡ì•„ì§€ì›ì„¼í„°(ëŒ€ì¹˜ì )" title="ìœ¡ì•„ì§€ì›ì„¼í„°(ëŒ€ì¹˜ì )" coords="431,336,441,346" shape="rect" />
+						<area href="#" alt="ìœ¡ì•„ì§€ì›ì„¼í„°(ë„ê³¡ì )" title="ìœ¡ì•„ì§€ì›ì„¼í„°(ë„ê³¡ì )" coords="463,336,473,346" shape="rect" />
+						<area href="#" alt="ë™ë™ë ˆì½”í…(ì„±ë‚´ì )" title="ë™ë™ë ˆì½”í…(ì„±ë‚´ì )" coords="553,250,563,260" shape="rect" />
+						<area href="#" alt="í‚¤ë“í‚¤ë“ë†€ì‡ê°í„°" title="í‚¤ë“í‚¤ë“ë†€ì‡ê°í„°" coords="94,229,104,239" shape="rect" />
+						<area href="#" alt="ê¿ˆë†€ì´í„°" title="ê¿ˆë†€ì´í„°" coords="274,367,284,377" shape="rect" />
+						<area href="#" alt="ì¬ë¯¸ì”¨ì•—" title="ì¬ë¯¸ì”¨ì•—" coords="468,257,478,267" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë‚˜ë¼(êµ¬ë¡œì )" title="ì¥ë‚œê°ë‚˜ë¼(êµ¬ë¡œì )" coords="194,319,204,329" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë‚˜ë¼(ê°œë´‰ì )" title="ì¥ë‚œê°ë‚˜ë¼(ê°œë´‰ì )" coords="160,305,170,315" shape="rect" />
 						
-						<area href="#" alt="Àå³­°¨³ª¶ó(½ÃÈïÁ¡)" title="Àå³­°¨³ª¶ó(½ÃÈïÁ¡)" coords="209,358,219,368" shape="rect" />
-						<area href="#" alt="Àå³­°¨³ª¶ó(µ¶»êÁ¡)" title="Àå³­°¨³ª¶ó(µ¶»êÁ¡)" coords="213,376,223,386" shape="rect" />
-						<area href="#" alt="³îÀÌ¾Æ¶ì »ó°èÁ¡" title="³îÀÌ¾Æ¶ì »ó°èÁ¡" coords="465,109,475,119" shape="rect" />
-						<area href="#" alt="³îÀÌ¾Æ¶ì ¿ù°èÁ¡" title="³îÀÌ¾Æ¶ì ¿ù°èÁ¡" coords="465,127,475,137" shape="rect" />
-						<area href="#" alt="¹æÇĞµ¿Àå³­°¨³ª¶ó" title="¹æÇĞµ¿Àå³­°¨³ª¶ó" coords="389,91,399,101" shape="rect" />
-						<area href="#" alt="Ã¢µ¿Àå³­°¨³ª´®ÀÌ" title="Ã¢µ¿Àå³­°¨³ª´®ÀÌ" coords="407,91,417,101" shape="rect" />
-						<area href="#" alt="Àå³­°¨¹æ(´ä½Ê¸®Á¡)" title="Àå³­°¨¹æ(´ä½Ê¸®Á¡)" coords="437,204,447,214" shape="rect" />
-						<area href="#" alt="Àå³­°¨¹æ(Á¦±âÁ¡)" title="Àå³­°¨¹æ(Á¦±âÁ¡)" coords="453,203,463,213" shape="rect" />
-						<area href="#" alt="·Î¾ßÀå³­°¨´ë¿©Á¡" title="·Î¾ßÀå³­°¨´ë¿©Á¡" coords="298,306,308,316" shape="rect" />
-						<area href="#" alt="µµÈ­Àå³­°¨´ë¿©Á¡" title="µµÈ­Àå³­°¨´ë¿©Á¡" coords="231,234,241,244" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë‚˜ë¼(ì‹œí¥ì )" title="ì¥ë‚œê°ë‚˜ë¼(ì‹œí¥ì )" coords="209,358,219,368" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë‚˜ë¼(ë…ì‚°ì )" title="ì¥ë‚œê°ë‚˜ë¼(ë…ì‚°ì )" coords="213,376,223,386" shape="rect" />
+						<area href="#" alt="ë†€ì´ì•„ë  ìƒê³„ì " title="ë†€ì´ì•„ë  ìƒê³„ì " coords="465,109,475,119" shape="rect" />
+						<area href="#" alt="ë†€ì´ì•„ë  ì›”ê³„ì " title="ë†€ì´ì•„ë  ì›”ê³„ì " coords="465,127,475,137" shape="rect" />
+						<area href="#" alt="ë°©í•™ë™ì¥ë‚œê°ë‚˜ë¼" title="ë°©í•™ë™ì¥ë‚œê°ë‚˜ë¼" coords="389,91,399,101" shape="rect" />
+						<area href="#" alt="ì°½ë™ì¥ë‚œê°ë‚˜ëˆ”ì´" title="ì°½ë™ì¥ë‚œê°ë‚˜ëˆ”ì´" coords="407,91,417,101" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë°©(ë‹µì‹­ë¦¬ì )" title="ì¥ë‚œê°ë°©(ë‹µì‹­ë¦¬ì )" coords="437,204,447,214" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ë°©(ì œê¸°ì )" title="ì¥ë‚œê°ë°©(ì œê¸°ì )" coords="453,203,463,213" shape="rect" />
+						<area href="#" alt="ë¡œì•¼ì¥ë‚œê°ëŒ€ì—¬ì " title="ë¡œì•¼ì¥ë‚œê°ëŒ€ì—¬ì " coords="298,306,308,316" shape="rect" />
+						<area href="#" alt="ë„í™”ì¥ë‚œê°ëŒ€ì—¬ì " title="ë„í™”ì¥ë‚œê°ëŒ€ì—¬ì " coords="231,234,241,244" shape="rect" />
 						
-						<area href="#" alt="¸Á¿øÀå³­°¨´ë¿©Á¡" title="¸Á¿øÀå³­°¨´ë¿©Á¡" coords="254,239,264,249" shape="rect" />
-						<area href="#" alt="³îÀÕ°¨´ë¿©" title="³îÀÕ°¨´ë¿©" coords="263,210,273,220" shape="rect" />
-						<area href="#" alt="¼­ÃÊÀå³­°¨µµ¼­°ü" title="¼­ÃÊÀå³­°¨µµ¼­°ü" coords="381,337,391,347" shape="rect" />
-						<area href="#" alt="¹«Áö°³Àå³­°¨¼¼»ó" title="¹«Áö°³Àå³­°¨¼¼»ó" coords="412,245,422,255" shape="rect" />
-						<area href="#" alt="Àå³­°¨ÀÌÁÁ¾Æ" title="Àå³­°¨ÀÌÁÁ¾Æ" coords="375,176,385,186" shape="rect" />
-						<area href="#" alt="³îÀÌ°¨´ë¿©½Ç" title="³îÀÌ°¨´ë¿©½Ç" coords="504,305,514,315" shape="rect" />
-						<area href="#" alt="ÇØ´©¸®´ë¿©ÅÍ" title="ÇØ´©¸®´ë¿©ÅÍ" coords="171,279,181,289" shape="rect" />
-						<area href="#" alt="¶ó¿ÂÀå³­°¨³ª¶ó" title="¶ó¿ÂÀå³­°¨³ª¶ó" coords="243,146,253,156" shape="rect" />
-						<area href="#" alt="½£¼Ó³îÀÌÅÍ" title="½£¼Ó³îÀÌÅÍ" coords="328,200,338,210" shape="rect" />
-						<area href="#" alt="¼­¿ï³ì»öÀå³­°¨µµ¼­°ü" title="¼­¿ï³ì»öÀå³­°¨µµ¼­°ü" coords="363,220,377,234" shape="rect" />
+						<area href="#" alt="ë§ì›ì¥ë‚œê°ëŒ€ì—¬ì " title="ë§ì›ì¥ë‚œê°ëŒ€ì—¬ì " coords="254,239,264,249" shape="rect" />
+						<area href="#" alt="ë†€ì‡ê°ëŒ€ì—¬" title="ë†€ì‡ê°ëŒ€ì—¬" coords="263,210,273,220" shape="rect" />
+						<area href="#" alt="ì„œì´ˆì¥ë‚œê°ë„ì„œê´€" title="ì„œì´ˆì¥ë‚œê°ë„ì„œê´€" coords="381,337,391,347" shape="rect" />
+						<area href="#" alt="ë¬´ì§€ê°œì¥ë‚œê°ì„¸ìƒ" title="ë¬´ì§€ê°œì¥ë‚œê°ì„¸ìƒ" coords="412,245,422,255" shape="rect" />
+						<area href="#" alt="ì¥ë‚œê°ì´ì¢‹ì•„" title="ì¥ë‚œê°ì´ì¢‹ì•„" coords="375,176,385,186" shape="rect" />
+						<area href="#" alt="ë†€ì´ê°ëŒ€ì—¬ì‹¤" title="ë†€ì´ê°ëŒ€ì—¬ì‹¤" coords="504,305,514,315" shape="rect" />
+						<area href="#" alt="í•´ëˆ„ë¦¬ëŒ€ì—¬í„°" title="í•´ëˆ„ë¦¬ëŒ€ì—¬í„°" coords="171,279,181,289" shape="rect" />
+						<area href="#" alt="ë¼ì˜¨ì¥ë‚œê°ë‚˜ë¼" title="ë¼ì˜¨ì¥ë‚œê°ë‚˜ë¼" coords="243,146,253,156" shape="rect" />
+						<area href="#" alt="ìˆ²ì†ë†€ì´í„°" title="ìˆ²ì†ë†€ì´í„°" coords="328,200,338,210" shape="rect" />
+						<area href="#" alt="ì„œìš¸ë…¹ìƒ‰ì¥ë‚œê°ë„ì„œê´€" title="ì„œìš¸ë…¹ìƒ‰ì¥ë‚œê°ë„ì„œê´€" coords="363,220,377,234" shape="rect" />
 
 					</map>
 				</div>
-				
+				<input type="button" id="testBtn" value="ë²„íŠ¼ì´ë‹¤" data="/app/toyProj/test/100/1ì„¸~2ì„¸"></input>
 				<!-- search list -->
 				<c:choose>
 				<c:when test="${!empty list }">
 				<div id="search_list">
 					<table>
 						<tr>
-							<p id="search_list_p">ÃÑ ${page.totalCount} °Ç¼ö</p>
+							<p id="search_list_p">ì´ ${page.totalCount} ê±´ìˆ˜</p>
 							<c:set var="cnt" value="1"/>
 							<c:forEach var="toy" items="${list }">
 								<td>
 									<img src="../images/toy/${toy.toyImg }" width="155"/><br/>
 									<a href="getToy.do?toyIdid=${toy.toyCode }">${toy.toyName }</a><br/>
 									<c:choose>
-										<c:when test="${toy.rentalState=='´ëÃâ°¡´É      ' }">´ëÃâ°¡´É</c:when>
-										<c:when test="${toy.rentalState=='Á¦Àû          ' }">´ëÃâÁß </c:when>
+										<c:when test="${toy.rentalState=='ëŒ€ì¶œê°€ëŠ¥      ' }">ëŒ€ì¶œê°€ëŠ¥</c:when>
+										<c:when test="${toy.rentalState=='ì œì           ' }">ëŒ€ì¶œì¤‘ </c:when>
 									</c:choose>	
 								</td>
 								<c:if test="${cnt mod 4 == 0 }">
@@ -229,11 +339,11 @@
 				
 				<div id="search_page">
 					<input type="hidden" id="currentPage" name="currentPage" value=""/>
-					<jsp:include page="pageNavigator.jsp"/>	
+					<jsp:include page="../common/pageNavigator.jsp"/>	
 				</div>
 				</c:when>
 				<c:otherwise>
-					°Ë»ö°á°ú°¡ ¾ø½À´Ï´Ù.
+					ê²€ìƒ‰ê²°ê³¼ê°€ ì—†ìŠµë‹ˆë‹¤.
 				</c:otherwise>
 				</c:choose>
 				</form>
@@ -243,13 +353,3 @@
 			</div>
 		</div>
 		<!-- end #contentContainer -->
-
-		<br class="clearfloat" />
-
-		<!-- footer -->
-		<jsp:include page="../layout/footer.jsp" />
-
-	</div>
-	<!-- end #container -->
-</body>
-</html>

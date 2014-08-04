@@ -25,9 +25,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  		<typeAlias alias="gu" type="spring.domain.Gu"/>
  		<typeAlias alias="guroToy" type="spring.domain.guro.GuroToy"/>
  		<typeAlias alias="guroRentalShop" type="spring.domain.guro.GuroRentalShop"/>
+ 		<typeAlias alias="notice" type="spring.domain.Notice"/>
  	</typeAliases>
  	
  	<mappers>
  		<mapper resource="sql/ToyProductMapper.xml"/>
+ 		<mapper resource="sql/NoticeMapper.xml"/>
  	</mappers>
  </configuration>
