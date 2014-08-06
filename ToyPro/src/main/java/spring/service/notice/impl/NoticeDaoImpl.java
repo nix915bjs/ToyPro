@@ -36,7 +36,7 @@ public class NoticeDaoImpl implements NoticeDao {
 	@Override
 	public int getTotalCount(Search search) throws Exception {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("NoticeMapper.getTotalCount", search);
+		return (Integer)sqlSession.selectOne("NoticeMapper.getTotalCount", search);
 	}
 
 }

@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile 'org.springframework:spring-webmvc:3.0.5.RELEASE','org.mybatis:mybatis-spring:1.2.0',
+			'org.mybatis:mybatis:3.2.1','org.quartz-scheduler:quartz:1.8.6','org.aspectj:aspectjweaver:1.6.8',
+			'org.codehaus.jackson:jackson-mapper-asl:1.4.2','commons-io:commons-io:1.4','javax.servlet:jstl:1.2',
+			'commons-dbcp:commons-dbcp:1.2.2','commons-logging:commons-logging:1.1.1','commons-pool:commons-pool:1.5.3',
+			'org.codehaus.jackson:jackson-mapper-asl:1.4.2','org.apache.httpcomponents:httpclient-cache:4.3.4',
+			'org.slf4j:slf4j-log4j12:1.6.0','org.slf4j:slf4j-api:1.6.0','com.googlecode.json-simple:json-simple:1.1',
+			'org.springframework:spring-tx:3.0.5.RELEASE','org.springframework:spring-jdbc:3.0.5.RELEASE'
+}
+

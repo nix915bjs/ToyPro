@@ -3,9 +3,6 @@ package spring.service.toyproduct.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.mybatis.spring.SqlSessionFactoryBean;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -69,7 +66,7 @@ public class ToyProductDaoImpl implements ToyProductDao
 
 	@Override
 	public int getTotalCount(Search search) throws Exception {
-		return sqlSession.selectOne("ToyProductMapper.getTotalCount", search);
+		return (Integer)sqlSession.selectOne("ToyProductMapper.getTotalCount", search);
 	}
 	
 //	@Override
@@ -129,7 +126,7 @@ public class ToyProductDaoImpl implements ToyProductDao
 		
 		for(int i=0;i<30;i++){
 			search.setShopCode(shopCode[i]);
-			toyCount[i]=sqlSession.selectOne("ToyProductMapper.getToyCount", search);
+			toyCount[i]=(Integer)sqlSession.selectOne("ToyProductMapper.getToyCount", search);
 			//toyCount[i]=sqlSession.selectOne("ToyProductMapper.getTotalCount", search);
 			System.out.print(toyCount[i]);
 		}
