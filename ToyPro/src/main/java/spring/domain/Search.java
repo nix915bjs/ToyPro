@@ -9,7 +9,16 @@ public class Search {
 	private String searchConditionAge;
 	private String searchKeyword;
 	private int pageSize;
+	private int shopCode;
 	
+	public int getShopCode() {
+		return shopCode;
+	}
+
+	public void setShopCode(int shopCode) {
+		this.shopCode = shopCode;
+	}
+
 	///Constructor
 	public Search() {
 	}
@@ -54,12 +63,14 @@ public class Search {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Search [currentPage=" + currentPage + ", searchConditionCate="
 				+ searchConditionCate + ", searchConditionAge="
 				+ searchConditionAge + ", searchKeyword=" + searchKeyword
-				+ ", pageSize=" + pageSize + "]";
+				+ ", pageSize=" + pageSize + ", shopCode=" + shopCode + "]";
 	}
+	
+	
 }

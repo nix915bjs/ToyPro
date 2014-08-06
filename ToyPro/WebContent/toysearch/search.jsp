@@ -7,158 +7,6 @@
 <link href="../css/header.css" rel="stylesheet" type="text/css" />
 <link href="../css/footer.css" rel="stylesheet" type="text/css" />
 <link href="../css/aside.css" rel="stylesheet" type="text/css" /> -->
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script type="text/javascript">
-//검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
-	/* function fncToyList(currentPage) {
-		document.getElementById("currentPage").value = currentPage;
-	   	document.searchForm.submit();		
-	} */
-/* 	function fncToyList(currentPage2) {
-		var currentPage = document.getElementById("currentPage")
-		currentPage.value = currentPage2;
-		alert(currentPage.value);
-		var searchForm = document.getElementById("searchForm");
-		searchForm.submit();
-	} */
-	var xmlHttp;
-
-	$(document).ready(function()
-	{
-		// 버튼이 눌렸을 때의 이벤트를 펑션으로 구현
-		initEventListener();
-		
-		// Ajax 구현을 위한 환경설정 중 아래와 같이 두 단계의 내용을 실행
-		// 1. XMLHttpRequest 객체 생성
-		// 2. 요청에 대한 응답 처리 이벤트 리스너 등록
-		initXMLHttpRequest();
-	});
-
-	// 외부 페이지의 파일명을 알아낸다.
-	function initEventListener()
-	{
-		// 버튼을 클릭 했을 때 이벤트 발생
-		$("#testBtn").click(function(e)
-		{
-			alert("읽어들일 페이지 " + $(this).attr("data"));
-			loadPage($(this).attr("data"));
-			alert("loadPage 통과했나?");
-		});
-	}
-
-	// XMLHttpRequest를 미리 생성해 둡니다.
-	function initXMLHttpRequest()
-	{
-		// 1. 브라우저에 따른 XMLHttpReqeust 생성
-		xmlHttp = createXMLHTTPObject();
-		
-		// 2. 요청에 대한 응답 처리 이벤트 리스너 등록
-		xmlHttp.onreadystatechange = on_ReadyStateChange;
-	}
-
-	// 1. 브라우저에 따른 XMLHttpRequest 생성
-	function createXMLHTTPObject()
-	{
-		var xhr = null;
-		if(window.XMLHttpRequest)
-		{
-			// IE7 버전 이상, 크롬, 사파리, 파이어폭스, 오페라 등 거의 대부분의
-			// 브라우저에서는 XMLHttpReqeust 객체를 제공합니다.
-			xhr = new XMLHttpRequest();
-			alert("객체 생성 완료");
-		}
-		else
-		{
-			// IE5, IE6 버전에서는 다음과 같은 방법으로 XMLHttpRequest 객체를 생성합니다.
-			xhr = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		return xhr;
-	}
-
-	// 페이지를 로딩하는 함수입니다.
-	// 페이지를 읽어 들일 때 책임을 맡는다.
-	function loadPage(strPage)
-	{
-		// 3. 서버로 보낼 데이터 생성
-		// 4. GET 방식으로 데이터 보내기, 응답은 비동기화 클라이언트와 서버 간의 연결 요청 준비
-		alert("loadPage 탔나?");
-		alert(strPage);
-		xmlHttp.open("GET", strPage, true);
-		//xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		
-		/* alert("open 다음"); */
-		// 5. 실제 데이터 전송
-		xmlHttp.send(null);
-		/* alert("loadPage() 끝!!"); */
-	}
-
-	// 6. 응답 처리
-	function on_ReadyStateChange()
-	{
-		// 4 = 데이터 전송 완료 (0 = 초기화 전, 1 = 로딩 중, 2 = 로딩 됨, 3 = 대화 상태)
-		alert(xmlHttp.readyState);
-		if(xmlHttp.readyState == 4)
-		{
-			// 200은 에러 없음 (404 = 페이지가 존재하지 않음)
-			alert(xmlHttp.status);
-			if(xmlHttp.status == 200)
-			{
-				// 서버에서 받은 값
-				alert("서버에서 받은 원본 데이터 : " + xmlHttp.responseText);
-				
-				// 7. 데이터 처리
-				addPage(xmlHttp.responseText );
-			}
-			else
-			{
-				alert("처리 중 에러가 발생했습니다.");			
-			}
-		}
-	}
-
-	// 7. json 형식의 데이터 처리
-	function addPage(strInfo)
-	{
-		alert("strInfo : "+strInfo);
-		alert("addPage() 탔나?");
-		var $newPage = $('strInfo');
-		alert("newPage 다음");
-		var strID = $newPage.attr("id");
-		alert("strID 다음");
-		if($("#"+strID).size() == 0)
-		{
-			alert("if 문 탔다");
-			$("#page_container").append(strInfo);	
-		}
-		else
-		{
-			alert("이미 "+strID+"페이지가 존재합니다.");
-		}
-	}
-	
-	function display()
-	{
-		var a = document.getElementById("countId");
-		a.style.display = "block";
-	}
-	
-	function fncToyList(currentPage2) {
-		var currentPage = document.getElementById("currentPage");
-		if(currentPage!=null){
-			currentPage.value = currentPage2;
-			//alert("currentPage : "+currentPage.value);
-		}
-		
-/* 		var searchCon = document.searchForm.searchConditionCate.value;
-		alert(searchCon);
-		
-		var searchAge = document.searchForm.searchConditionAge.value;
-		alert(searchAge); */
-		
-		var searchForm = document.getElementById("searchForm");
-		searchForm.submit();
-	}
-</script>
 
 		<!-- begin #contentContainer -->
 		<div id="contentContainer">
@@ -187,7 +35,6 @@
 				<!-- begin #centent_content  -->
 				<div id="content_content">
     			<center>
-    			<form method="post" id="searchForm" name="searchForm" action="/listToyProductList.do" >
     			<div id="search_box">
 					분 류&nbsp;&nbsp;
 					<select id="subject" name="searchConditionCate"> 
@@ -264,8 +111,8 @@
 					</select> 
 					&nbsp;&nbsp;&nbsp;
 					장난감명&nbsp;
-					<input type="text" size="20" name="searchKeyword" />&nbsp;
-					<input type="submit" value=" 검 색 "  class="search_btn"/>
+					<input id="keyword" type="text" size="20" name="searchKeyword" />&nbsp;
+					<input type="button" id="Btn" value="검색" class="search_btn" data="/app/showCount"></input>
 				</div>
 				
 				
@@ -308,8 +155,37 @@
 						<area href="#" alt="서울녹색장난감도서관" title="서울녹색장난감도서관" coords="363,220,377,234" shape="rect" />
 
 					</map>
+					<span id="b1"></span>
+					<span id="b2"></span>
+					<span id="b3"></span>
+					<span id="b4"></span>
+					<span id="b5"></span>
+					<span id="b6"></span>
+					<span id="b7"></span>
+					<span id="b8"></span>
+					<span id="b9"></span>
+					<span id="b10"></span>
+					<span id="b11"></span>
+					<span id="b12"></span>
+					<span id="b13"></span>
+					<span id="b14"></span>
+					<span id="b15"></span>
+					<span id="b16"></span>
+					<span id="b17"></span>
+					<span id="b18"></span>
+					<span id="b19"></span>
+					<span id="b20"></span>
+					<span id="b21"></span>
+					<span id="b22"></span>
+					<span id="b23"></span>
+					<span id="b24"></span>
+					<span id="b25"></span>
+					<span id="b26"></span>
+					<span id="b27"></span>
+					<span id="b28"></span>
+					<span id="b29"></span>
+					<span id="b30"></span>
 				</div>
-				<input type="button" id="testBtn" value="버튼이다" data="/app/toyProj/test/100/1세~2세"></input>
 				<!-- search list -->
 				<c:choose>
 				<c:when test="${!empty list }">
@@ -342,14 +218,16 @@
 					<jsp:include page="../common/pageNavigator.jsp"/>	
 				</div>
 				</c:when>
-				<c:otherwise>
-					검색결과가 없습니다.
-				</c:otherwise>
 				</c:choose>
-				</form>
 				</center>
     		</div>
 				<!-- end #centent_content  -->
 			</div>
 		</div>
 		<!-- end #contentContainer -->
+		
+<script type="text/javascript">
+initEventListener();
+
+initXMLHttpRequest();
+</script>

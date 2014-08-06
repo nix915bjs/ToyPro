@@ -18,9 +18,9 @@
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="../js/changeContent.js"></script>
-
+<script type="text/javascript" src="../js/search.js"></script>
 </head>
-<body>
+<body> 
 <!-- begin #container -->
 <div id="container">
 	

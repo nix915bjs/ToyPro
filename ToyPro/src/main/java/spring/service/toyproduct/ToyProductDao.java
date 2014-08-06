@@ -24,4 +24,6 @@ public interface ToyProductDao
 //	public void deleteList()throws Exception;
 	
 	public List<String> getToyId() throws Exception;
+	
+	public int[] getToyCount(Search search) throws Exception;
 }

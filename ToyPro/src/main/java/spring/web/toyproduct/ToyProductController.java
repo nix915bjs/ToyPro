@@ -3,12 +3,15 @@ package spring.web.toyproduct;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.common.parse.GuroRentalShopParsing;
@@ -93,5 +96,27 @@ public class ToyProductController
 		System.out.println("controller 다 탔나요");
 		return modelAndView;
 		
+	}
+	
+	@RequestMapping(value="/showCount/{searchConditionAge}/{searchConditionCate}/{searchKeyword}")
+	public @ResponseBody String showCount(@PathVariable String searchConditionCate, @PathVariable String searchConditionAge,@PathVariable String searchKeyword) throws Exception
+	{
+		System.out.println("컨트롤러");
+		
+		Search search=new Search();
+		if(search.getCurrentPage() ==null){
+			search.setCurrentPage(1);
+		}
+		search.setPageSize(pageSize);
+		
+		search.setSearchConditionAge(searchConditionAge);
+		search.setSearchConditionCate(searchConditionCate);
+		search.setSearchKeyword(searchKeyword);
+		System.out.println(search);
+		int a[] = toyProductService.getToyCount(search);
+		ObjectMapper objectMapper =
+				new ObjectMapper();
+		String jsonCount = objectMapper.writeValueAsString(a);
+		return jsonCount;
 	}
 }

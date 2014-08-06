@@ -1,6 +1,38 @@
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothic.css);
 @import url(http://fonts.googleapis.com/earlyaccess/nanumgothiccoding.css);
 
+
+#search_map span{vertical-align:middle;line-height:30px;text-align:center; width:30px;height:30px;font-size:11pt;font-weight:bolder;color:black;background-image:url("../images/speechbubble05.png");background-size: cover;}
+#b1{position:absolute;top:790px;left:826px;display:none;}
+#b2{position:absolute;top:791px;left:797px;display:none;}
+#b3{position:absolute;top:812px;left:806px;display:none;}
+#b4{position:absolute;top:812px;left:834px;display:none;}
+#b5{position:absolute;top:780px;left:878px;display:none;}
+#b6{position:absolute;top:725px;left:925px;display:none;}
+#b7{position:absolute;top:810px;left:758px;display:none;}
+#b8{position:absolute;top:840px;left:650px;display:none;}
+#b9{position:absolute;top:850px;left:588px;display:none;}
+#b10{position:absolute;top:830px;left:582px;display:none;}
+#b11{position:absolute;top:780px;left:672px;display:none;}
+#b12{position:absolute;top:790px;left:565px;display:none;}
+#b13{position:absolute;top:780px;left:530px;display:none;}
+#b14{position:absolute;top:754px;left:545px;display:none;}
+#b15{position:absolute;top:700px;left:465px;display:none;}
+#b16{position:absolute;top:708px;left:603px;display:none;}
+#b17{position:absolute;top:713px;left:630px;display:none;}
+#b18{position:absolute;top:680px;left:638px;display:none;}
+#b19{position:absolute;top:620px;left:617px;display:none;}
+#b20{position:absolute;top:670px;left:703px;display:none;}
+#b21{position:absolute;top:695px;left:740px;display:none;}
+#b22{position:absolute;top:650px;left:750px;display:none;}
+#b23{position:absolute;top:720px;left:786px;display:none;}
+#b24{position:absolute;top:735px;left:840px;display:none;}
+#b25{position:absolute;top:680px;left:810px;display:none;}
+#b26{position:absolute;top:680px;left:830px;display:none;}
+#b27{position:absolute;top:600px;left:837px;display:none;}
+#b28{position:absolute;top:580px;left:837px;display:none;}
+#b29{position:absolute;top:560px;left:785px;display:none;}
+#b30{position:absolute;top:560px;left:760px;display:none;}
 #search_box
 {
 	font-size: 12pt;
@@ -141,3 +173,5 @@
 #content #content_content{
  	float: left;
 }
+
+

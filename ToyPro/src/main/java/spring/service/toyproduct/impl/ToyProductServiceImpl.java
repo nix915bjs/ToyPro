@@ -84,4 +84,10 @@ public class ToyProductServiceImpl implements ToyProductService
 			// TODO Auto-generated method stub
 			return toyProductDao.guroToyParsing(toyList, dbToyIdList);
 		}
+
+		@Override
+		public int[] getToyCount(Search search) throws Exception {
+			// TODO Auto-generated method stub
+			return toyProductDao.getToyCount(search);
+		}
 }

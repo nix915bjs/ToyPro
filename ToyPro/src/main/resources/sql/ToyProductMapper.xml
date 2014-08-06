@@ -77,6 +77,74 @@
 		ORDER BY rental_name
 	</sql>
 	
+	
+	
+	<sql id="sqlToyList2">
+		SELECT rental_code,toy_name, rental_state, toy_img, rental_name, age_subject
+		FROM (SELECT t.rental_code,t.toy_name, t.rental_state, t.toy_img, r.rental_name, t.category_code,
+															 decode(t.use_age, '3개월이상', '0~1세'
+                                                                                                ,'6개월이상', '0~1세'
+                                                                                                ,'10개월이상', '0~1세'
+                                                                                                ,'12개월이상', '1세~2세'
+                                                                                                ,'12개월~36개월', '1세~2세'
+                                                                                                ,'12개월~3세이상', '1세~2세'
+                                                                                                ,'12개월~4세 이상', '1세~2세'
+                                                                                                ,'1세이상', '1세~2세'
+                                                                                                ,'1세부터', '1세~2세'
+                                                                                                ,'1세~4세', '1세~2세'
+                                                                                                ,'18개월-48개월까지', '1세~2세'
+                                                                                                ,'13개월~36개월', '1세~2세'
+                                                                                                ,'만2세이상. 30kg이내', '1세~2세'
+                                                                                                ,'25개월이상', '2세~3세'
+                                                                                                ,'만3세이상', '2세~3세'
+                                                                                                ,'36개월이상', '3세~4세'
+                                                                                                ,'37개월이상', '3세~4세'
+                                                                                                ,'37개월이상, 40KG미만 사용', '3세~4세'
+                                                                                                ,'3세이상', '3세~4세'
+                                                                                                ,'3세이상~7세미만', '3세~4세'
+                                                                                                ,'만 4세 이상 사용 / 최대하중 35kg이하', '3세~4세'
+                                                                                                ,'4세이상', '4세~5세'
+                                                                                                ,'4세이상. 25kg미만', '4세~5세'
+                                                                                                ,'5세이상', '5세이상'
+                                                                                                        ,'전체연령') as age_subject
+                        FROM toy_info t, rental_shop r
+             			WHERE t.rental_code = r.rental_code and t.rental_code=${shopCode})
+
+
+		<trim prefix="WHERE">
+			<if test="searchConditionCate != 'null'">
+				category_code in ('${searchConditionCate}') 
+				<if test="searchConditionAge != 'null'">
+					AND age_subject in ('${searchConditionAge}')
+				</if>
+				<if test="searchKeyword != 'null'">
+					AND toy_name LIKE '%${searchKeyword}%'
+				</if>
+			</if>
+			<if test="searchConditionCate == 'null'">
+				<if test="searchConditionAge != 'null'">
+					age_subject in ('${searchConditionAge}')
+					<if test="searchKeyword != 'null'">
+						AND toy_name LIKE '%${searchKeyword}%'
+					</if>
+				</if>
+				<if test="searchConditionAge == 'null'">
+					<if test="searchKeyword != 'null'">
+						toy_name LIKE '%${searchKeyword}%'
+					</if>
+				</if>
+			</if>
+		</trim>
+	
+	</sql>
+	
+	<select  id="getToyCount"  parameterType="search" resultType="int">
+	  	SELECT COUNT(*)
+	  	FROM (<include refid="sqlToyList2"/>) countTable						
+	 </select>
+	
+	
+	
 	<select id="getToyList" parameterType="search" resultMap="toySelectMap">
 		SELECT toy_name, rental_state, toy_img, rental_name
 		FROM(SELECT toy_name, rental_state, toy_img, rental_name, ROWNUM AS row_seq

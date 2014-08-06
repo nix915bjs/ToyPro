@@ -118,4 +118,21 @@ public class ToyProductDaoImpl implements ToyProductDao
 		
 		return insertCount;
 	}
+	
+	@Override
+	public int[] getToyCount(Search search)throws Exception{
+		
+		int shopCode[]={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30};
+		int toyCount[]=new int[30];
+		System.out.println("서치 출력이다\n"+search);
+		System.out.println("오지물론5");
+		
+		for(int i=0;i<30;i++){
+			search.setShopCode(shopCode[i]);
+			toyCount[i]=sqlSession.selectOne("ToyProductMapper.getToyCount", search);
+			//toyCount[i]=sqlSession.selectOne("ToyProductMapper.getTotalCount", search);
+			System.out.print(toyCount[i]);
+		}
+		return toyCount;
+	}
 }
