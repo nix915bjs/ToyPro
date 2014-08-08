@@ -325,4 +325,7 @@ insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MA
 
 insert into rental_shop(rental_code, gu_code, rental_name) values((SELECT NVL(MAX(rental_code)+1, 1) FROM rental_shop), 25, '장난감대여센터(면목점)');
 
+--notice insert
+INSERT INTO notice VALUES ((SELECT NVL(MAX(notice_code)+1, 1) FROM notice), '제목1',SYSDATE, 0, '진솔', '내용입니다','');
+	
 commit;
